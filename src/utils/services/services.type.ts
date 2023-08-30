@@ -14,6 +14,11 @@ export type GetPost = {
   body: string;
 };
 
+export type GetPosts = {
+  result: GetPost[];
+  numberOfPages: number;
+};
+
 export type GetUserArgs = RequestArgs<{ userId: number }>;
 
 export type GetUser = {
@@ -22,6 +27,11 @@ export type GetUser = {
   email: string;
   gender: string;
   status: string;
+};
+
+export type GetUsers = {
+  result: GetUser[];
+  numberOfPages: number;
 };
 
 export type GetCommentsArgs = RequestArgs<{ postId: number }>;
@@ -35,10 +45,4 @@ export type GetComment = {
 };
 
 export type GetPostsArgs = RequestArgs<{ page: number; take: number }>;
-
-export type GetPosts = GetPost & {
-  user: GetUser;
-  slug: string;
-  numberOfComments: number;
-  numberOfPages: number;
-};
+export type GetUsersArgs = RequestArgs<{ page: number; take: number }>;

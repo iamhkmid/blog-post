@@ -17,6 +17,7 @@ const config = {
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-type": "application/json",
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
   },
 };
 
