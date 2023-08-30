@@ -1,0 +1,7 @@
+.post {
+  @apply flex cursor-pointer flex-col rounded-md bg-white px-6 py-4 transition-all duration-200 ease-in-out shadow-sm;
+}
+
+.post:hover {
+  box-shadow: 0 0 0 2px theme('colors.blue.200');
+}

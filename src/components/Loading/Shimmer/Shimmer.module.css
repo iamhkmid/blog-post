@@ -1,0 +1,36 @@
+  .shimmer {
+    position: absolute;
+    z-index: 1;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeholderSkeleton;
+    animation-timing-function: linear;
+    background-image: -webkit-gradient(linear,
+        left center,
+        right center,
+        from(#f6f7f8),
+        color-stop(0.2, #edeef1),
+        color-stop(0.4, #f6f7f8),
+        to(#f6f7f8));
+    background-image: -webkit-linear-gradient(left,
+        theme('colors.transparent') 0%,
+        theme('colors.slate.100') 20%,
+        theme('colors.slate.200') 40%,
+        theme('colors.slate.200') 60%,
+        theme('colors.slate.100') 80%,
+        theme('colors.transparent') 100%);
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+  }
+
+  @keyframes placeholderSkeleton {
+    0% {
+      transform: translateX(-100%);
+    }
+
+    100% {
+      transform: translateX(100%);
+    }
+  }
