@@ -24,5 +24,5 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the development server.
-
+-- or --
 Open [https://blog-post-coral.vercel.app](https://blog-post-coral.vercel.app) to view deployment web.
