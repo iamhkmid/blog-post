@@ -38,6 +38,13 @@ const Portal: React.FC<UserDeleteModalProps> = (props) => {
       });
       props.onClose();
     },
+    onError: () => {
+      openToast({
+        title: "Failed",
+        description: "Something went wrong",
+        status: "failed",
+      });
+    },
   });
 
   return (

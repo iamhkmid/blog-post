@@ -12,6 +12,7 @@ import { GetUser } from "../../src/utils/services/services.type";
 import UserDeleteModal from "../../src/components/Modal/UserDeleteModal";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import * as Separator from "@radix-ui/react-separator";
+import UserCreateModal from "../../src/components/Modal/UserCreateModal";
 
 type UpdateUser = {
   open: boolean;
@@ -28,6 +29,9 @@ const User: NextPage = () => {
   const [page, setPage] = React.useState(1);
   const [selected, setSelected] = React.useState<number | null>(null);
   const [count, setCount] = React.useState(0);
+  const [createUser, setCreateUser] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
   const [updateUser, setUpdateUser] = React.useState<UpdateUser>({
     open: false,
     data: null,
@@ -43,8 +47,9 @@ const User: NextPage = () => {
   }, [queryPage]);
 
   const users = useQuery({
-    queryKey: ["users", page],
-    queryFn: () => getUsers({ variables: { page, take: 10 } }),
+    queryKey: ["users", page, searchValue],
+    queryFn: () =>
+      getUsers({ variables: { page, take: 10, search: searchValue } }),
     onError: () => {},
   });
 
@@ -56,6 +61,11 @@ const User: NextPage = () => {
     router.push({ query: { page } }, undefined, { scroll: false });
     window.scrollTo({ top: 0, behavior: "smooth" });
     setPage(page);
+  };
+
+  const onClearSearch = () => {
+    setSearchValue("");
+    setSearch("");
   };
 
   return (
@@ -77,15 +87,26 @@ const User: NextPage = () => {
         <div className="flex flex-col gap-4 rounded-md bg-white px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center gap-2">
             <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full rounded-[20px] border-[1px] border-slate-300 px-3 py-2 text-sm font-normal text-slate-600 outline-none placeholder:text-xs placeholder:font-normal focus:border-blue-600 md:text-base md:placeholder:text-sm"
               placeholder="Search user.."
             />
-            <button className="btn-primary icon-left">
+            <button
+              className="btn-primary icon-left"
+              onClick={() => setSearchValue(search)}
+            >
               <PlusIcon className="mr-1 h-[16px] text-white md:h-[18px]" />
               Search
             </button>
+            <button className="btn-secondary" onClick={onClearSearch}>
+              Reset
+            </button>
           </div>
-          <button className="btn-primary icon-left">
+          <button
+            className="btn-primary icon-left"
+            onClick={() => setCreateUser(true)}
+          >
             <PlusIcon className="mr-1 h-[16px] text-white md:h-[18px]" />
             Add
           </button>
@@ -93,6 +114,13 @@ const User: NextPage = () => {
         <Separator.Root className="mb-3 mt-5 h-[2px] w-full bg-slate-400" />
         <div className="mt-4 flex flex-col gap-4">
           {users.isLoading && <UserCardLoading />}
+          {!users.isLoading && !users.data?.result?.length && (
+            <div className="flex h-[200px] flex-col items-center justify-center gap-3 rounded-md bg-white py-[40px]">
+              <h1 className="text-sm font-bold text-slate-600 md:text-base">
+                No data..
+              </h1>
+            </div>
+          )}
           {!users.isLoading && !!users.error && (
             <div className="flex h-[300px] flex-col items-center justify-center gap-3 rounded-md bg-white py-[40px]">
               <h1 className="text-sm font-bold text-slate-600 md:text-base">
@@ -117,6 +145,11 @@ const User: NextPage = () => {
               />
             ))}
         </div>
+        <UserCreateModal
+          open={createUser}
+          onClose={() => setCreateUser(false)}
+          page={page}
+        />
         <UserEditModal
           defaultValues={updateUser.data}
           open={updateUser.open}

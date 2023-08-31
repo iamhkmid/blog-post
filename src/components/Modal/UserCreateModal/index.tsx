@@ -6,26 +6,26 @@ import { validationSchema } from "./validationSchema";
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import * as RadioGroup from "@radix-ui/react-radio-group";
-import styles from "./UserEditModal.module.css";
+import styles from "./UserCreateModal.module.css";
 import { GetUser, GetUsers } from "../../../utils/services/services.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUser } from "../../../utils/services";
+import { createUser, updateUser } from "../../../utils/services";
 import { ToastContext, ToastContextProps } from "../../../utils/ToastProvider";
 import CircleLoading from "../../Loading/CircleLoading";
 import { useRouter } from "next/router";
 
 type Schema = z.infer<typeof validationSchema>;
 
-type UserEditModalProps = {
-  defaultValues: GetUser | null;
+type UserCreateModalProps = {
   open: boolean;
   onClose: () => void;
   page: number;
 };
 
 const status = ["active", "inactive"];
+const gender = ["male", "female"];
 
-const UserEditModal: React.FC<UserEditModalProps> = (props) => {
+const UserCreateModal: React.FC<UserCreateModalProps> = (props) => {
   if (!props.open) return null;
   return (
     <Dialog.Root open={props.open}>
@@ -34,27 +34,27 @@ const UserEditModal: React.FC<UserEditModalProps> = (props) => {
   );
 };
 
-export default UserEditModal;
+export default UserCreateModal;
 
-const Portal: React.FC<UserEditModalProps> = (props) => {
+const Portal: React.FC<UserCreateModalProps> = (props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { openToast } = React.useContext(ToastContext) as ToastContextProps;
   const user = useMutation({
     mutationKey: ["updateUser"],
-    mutationFn: updateUser,
+    mutationFn: createUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
+      openToast({
+        title: "Success",
+        description: "User updated successfully",
+        status: "success",
+      });
       router.push({
         pathname: "/user",
         query: {
           page: 1,
         },
-      });
-      openToast({
-        title: "Success",
-        description: "User updated successfully",
-        status: "success",
       });
       props.onClose();
     },
@@ -69,7 +69,12 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
   const form = useForm<Schema>({
     mode: "all",
     reValidateMode: "onChange",
-    defaultValues: props.defaultValues!,
+    defaultValues: {
+      email: "",
+      gender: "",
+      name: "",
+      status: "",
+    },
     resolver: zodResolver(validationSchema),
   });
 
@@ -79,7 +84,7 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
         email: values.email,
         name: values.name,
         status: values.status,
-        userId: props.defaultValues?.id!,
+        gender: values.gender,
       },
     });
   });
@@ -103,7 +108,7 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
             </button>
           </div>
           <Dialog.Title className="text-xl font-bold text-blue-600 md:text-2xl">
-            Update User
+            Create User
           </Dialog.Title>
           <Controller
             control={form.control}
@@ -151,6 +156,40 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
             )}
           />
           <fieldset className="mt-5 flex flex-col gap-[10px]">
+            <label className="text-xs text-slate-600 md:text-sm">Gender</label>
+            <Controller
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <RadioGroup.Root
+                  className="flex gap-[20px]"
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
+                  {gender.map((item, idx) => (
+                    <div key={item} className="flex items-center gap-[10px]">
+                      <RadioGroup.Item
+                        className={styles.RadioGroupItem}
+                        value={item}
+                        id={`{r-gender-${idx + 1}}`}
+                      >
+                        <RadioGroup.Indicator
+                          className={styles.RadioGroupIndicator}
+                        />
+                      </RadioGroup.Item>
+                      <label
+                        className="text-xs font-semibold capitalize text-slate-600 md:text-sm"
+                        htmlFor={`{r-gender-${idx + 1}}`}
+                      >
+                        {item}
+                      </label>
+                    </div>
+                  ))}
+                </RadioGroup.Root>
+              )}
+            />
+          </fieldset>
+          <fieldset className="mt-5 flex flex-col gap-[10px]">
             <label className="text-xs text-slate-600 md:text-sm">Status</label>
             <Controller
               control={form.control}
@@ -166,7 +205,7 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
                       <RadioGroup.Item
                         className={styles.RadioGroupItem}
                         value={item}
-                        id={`{r${idx + 1}}`}
+                        id={`{r-status-${idx + 1}}`}
                       >
                         <RadioGroup.Indicator
                           className={styles.RadioGroupIndicator}
@@ -174,7 +213,7 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
                       </RadioGroup.Item>
                       <label
                         className="text-xs font-semibold capitalize text-slate-600 md:text-sm"
-                        htmlFor={`{r${idx + 1}}`}
+                        htmlFor={`{r-status-${idx + 1}}`}
                       >
                         {item}
                       </label>
@@ -201,7 +240,7 @@ const Portal: React.FC<UserEditModalProps> = (props) => {
                   user.isLoading ? "opacity-0" : "opacity-100"
                 } transition-opacity duration-200 ease-in-out`}
               >
-                Update
+                Create
               </div>
             </button>
             <button className="btn-secondary mt-7" onClick={props.onClose}>

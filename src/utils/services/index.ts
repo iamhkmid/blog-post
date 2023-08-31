@@ -18,9 +18,10 @@ export const getUser = async (args: svct.GetUserArgs) => {
 export const getUsers = async (
   args: svct.GetUsersArgs,
 ): Promise<svct.GetUsers> => {
-  const response = await api.get<svct.GetUser[]>(
-    `/public/v2/users?page=${args.variables.page}&per_page=${args.variables.take}`,
-  );
+  let pathname = `/public/v2/users?page=${args.variables.page}&per_page=${args.variables.take}`;
+  if (args.variables.search?.length)
+    pathname = `/public/v2/users?name=${args.variables.search}`;
+  const response = await api.get<svct.GetUser[]>(pathname);
   return {
     numberOfPages: response.headers["x-pagination-pages"],
     result: response.data,
@@ -44,6 +45,14 @@ export const getPosts = async (
     numberOfPages: response.headers["x-pagination-pages"],
     result: response.data,
   };
+};
+
+export const createUser = async (args: svct.CreateUserArgs) => {
+  const response = await api.post<svct.GetUser>(
+    "/public/v2/users",
+    args.variables,
+  );
+  return response.data;
 };
 
 export const updateUser = async (args: svct.UpdateUserArgs) => {

@@ -45,7 +45,11 @@ export type GetComment = {
 };
 
 export type GetPostsArgs = RequestArgs<{ page: number; take: number }>;
-export type GetUsersArgs = RequestArgs<{ page: number; take: number }>;
+export type GetUsersArgs = RequestArgs<{
+  page: number;
+  take: number;
+  search: string;
+}>;
 
 export type UpdateUserArgs = RequestArgs<{
   userId: number;
@@ -54,6 +58,12 @@ export type UpdateUserArgs = RequestArgs<{
   status: string;
 }>;
 
+export type CreateUserArgs = RequestArgs<{
+  gender: string;
+  name: string;
+  email: string;
+  status: string;
+}>;
 
 export type DeleteUserArgs = RequestArgs<{
   userId: number;
