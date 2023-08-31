@@ -11,7 +11,7 @@ const PaginationLoading = () => {
         {pages.map((page) => (
           <div
             key={page}
-            className="relative h-[25px] w-[25px] overflow-hidden rounded-full bg-slate-100 md:h-[30px] md:w-[30px]"
+            className="relative h-[28px] w-[28px] overflow-hidden rounded-full bg-slate-100 md:h-[30px] md:w-[30px]"
           >
             <Shimmer />
           </div>
