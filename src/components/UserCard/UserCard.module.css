@@ -1,5 +1,5 @@
 .userCard {
-  @apply flex cursor-pointer items-center justify-between gap-[8px] rounded-md bg-white px-4 py-3 shadow-sm transition-all duration-200 ease-in-out md:gap-[15px] md:px-6 md:py-4;
+  @apply flex w-full cursor-pointer flex-col rounded-md bg-white px-4 py-3 shadow-sm transition-all duration-200 ease-in-out md:px-6 md:py-4;
 }
 
 .userCard:hover {

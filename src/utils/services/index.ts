@@ -45,3 +45,19 @@ export const getPosts = async (
     result: response.data,
   };
 };
+
+export const updateUser = async (args: svct.UpdateUserArgs) => {
+  const { userId, ...rest } = args.variables;
+  const response = await api.patch<svct.GetUser>(
+    `/public/v2/users/${userId}`,
+    rest,
+  );
+  return response.data;
+};
+
+export const deleteUser = async (args: svct.DeleteUserArgs) => {
+  const response = await api.delete<svct.GetUser>(
+    `/public/v2/users/${args.variables.userId}`,
+  );
+  return response.data;
+};

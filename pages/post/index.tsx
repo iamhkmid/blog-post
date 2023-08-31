@@ -48,7 +48,7 @@ const Post: NextPage = () => {
       <div className="flex w-full justify-start md:w-[700px]">
         <button className="btn-primary icon-left mb-5" onClick={onClickBack}>
           <div className="flex items-center gap-1">
-            <ChevronLeftIcon className="h-[18px]" /> Back
+            <ChevronLeftIcon className="h-[16px] md:h-[18px]" /> Back
           </div>
         </button>
       </div>
