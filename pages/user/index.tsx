@@ -108,7 +108,7 @@ const User: NextPage = () => {
             onClick={() => setCreateUser(true)}
           >
             <PlusIcon className="mr-1 h-[16px] text-white md:h-[18px]" />
-            Add
+            Create user
           </button>
         </div>
         <Separator.Root className="mb-3 mt-5 h-[2px] w-full bg-slate-400" />
