@@ -3,7 +3,7 @@ This project was build with Next js
 
 ## Getting Started
 
-First, run the development server:
+First, install all depedencies:
 
 ```bash
 npm install
@@ -13,7 +13,7 @@ yarn install
 pnpm install
 ```
 
-run the development server:
+Run the development server:
 
 ```bash
 npm run dev
