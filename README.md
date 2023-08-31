@@ -23,6 +23,6 @@ yarn dev
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the development server.
 
 Open [https://blog-post-coral.vercel.app](https://blog-post-coral.vercel.app) to view deployment web.
