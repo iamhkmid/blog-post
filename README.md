@@ -1,5 +1,7 @@
 Frontend Enginer Challenge by Muhammad Luqmanul Hakim
 
+--
+
 This project was build with Next js
 
 ## Getting Started
